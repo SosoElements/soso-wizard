@@ -1,0 +1,151 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../soso-stepper/soso-stepper.html">
+<link rel="import" href="../soso-pages/soso-pages.html">
+
+<dom-module id="soso-wizard">
+  <template>
+    <style>
+      :host {
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -ms-flex-direction: column;
+        -webkit-flex-direction: column;
+        flex-direction: column;
+      }
+
+      .horizontal {
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -ms-flex-direction: row;
+        -webkit-flex-direction: row;
+        flex-direction: row;
+        -ms-flex-align: center;
+        -webkit-align-items: center;
+        align-items: center;
+      }
+
+      .flex {
+        -ms-flex: 1 1 0.000000001px;
+        -webkit-flex: 1;
+        flex: 1;
+        -webkit-flex-basis: 0.000000001px;
+        flex-basis: 0.000000001px;
+      }
+
+      .contentPanel {
+        position: relative;
+        overflow-x: hidden;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      soso-pages {
+        display: block;
+        position: relative;
+        overflow: initial;
+      }
+
+      header {
+        background: #fafafa;
+        padding-bottom: 5px;
+        border-bottom: 1px solid #e5e5e5;
+      }
+
+      h4 {
+        margin: 0;
+        font-weight: 400;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        font-size: 18px;
+        color: #000;
+        opacity: 0.87;
+      }
+
+      #titleBar {
+        padding: 16px 16px 3px;
+      }
+
+      #closeIcon {
+        height: 18px;
+        width: 18px;
+        padding: 4px;
+      }
+
+      svg {
+        display: block;
+        height: 100%;
+        width: 100%;
+        box-sizing: border-box;
+      }
+    </style>
+    <header>
+      <div id="titleBar" class="horizontal">
+        <h4 class="flex">[[label]]</h4>
+        <!-- <div id="closeIcon">
+          <svg viewBox="0 0 24 24">
+            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+          </svg>
+        </div> -->
+      </div>
+      <soso-stepper id="stepper" steps="[[steps]]" selected-index="{{selectedIndex}}"></soso-stepper>
+    </header>
+    <div class="flex contentPanel">
+      <soso-pages id="pages" animation="[[animation]]">
+        <slot id="slot" on-slotchange="_pagesLoaded"></slot>
+      </soso-pages>
+    </div>
+  </template>
+
+  <script>
+    class SosoWizard extends Polymer.Element {
+      static get is() { return 'soso-wizard'; }
+      static get properties() {
+        return {
+          selectedIndex: {
+            type: Number,
+            value: 0,
+            observer: '_refreshPage'
+          },
+          animation: {
+            type: String,
+            value: "shift-left"
+          },
+          steps: Array,
+          label: String
+        };
+      }
+
+      _refreshPage(newValue, oldValue) {
+        newValue = newValue || 0;
+        oldValue = oldValue || 0;
+        if (newValue < oldValue) {
+          this.animation = "shift-right";
+        } else {
+          this.animation = "shift-left";
+        }
+        if (this.$.pages) {
+          this.$.pages.selectedIndex = this.selectedIndex;
+        }
+      }
+
+      _pagesLoaded() {
+        const pages = this.$.slot.assignedNodes({ flatten: true }).filter(n => n.nodeType === Node.ELEMENT_NODE);
+        let steps = [];
+        for (let p of pages) {
+          steps.push({
+            label: p.dataset.label || ""
+          });
+        }
+        this.steps = steps;
+        this._refreshPage();
+        setTimeout(() => {
+          this.$.stepper.enable(4);
+        }, 2000);
+      }
+    }
+
+    window.customElements.define(SosoWizard.is, SosoWizard);
+  </script>
+</dom-module>

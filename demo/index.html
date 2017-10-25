@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+  <title>soso-wizard demo</title>
+
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <link rel="import" href="../soso-wizard.html">
+
+  <custom-style>
+    <style is="custom-style" include="demo-pages-shared-styles">
+      soso-wizard {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        font-family: "Roboto", sans-serif;
+      }
+    </style>
+  </custom-style>
+</head>
+
+<body>
+  <soso-wizard label="Create a new card">
+    <div data-label="Step one">
+      <h1>Page One</h1>
+    </div>
+    <div data-label="Step two">
+      <h1>Page Two</h1>
+    </div>
+    <div data-label="Step three">
+      <h1>Page Three</h1>
+    </div>
+    <div data-label="Step four">
+      <h1>Page Four</h1>
+    </div>
+    <div data-label="Step five">
+      <h1>Page Five</h1>
+    </div>
+  </soso-wizard>
+</body>
+
+</html>

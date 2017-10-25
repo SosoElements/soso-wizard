@@ -1,0 +1,16 @@
+{
+  "name": "soso-wizard",
+  "description": "Simple wizard",
+  "main": "soso-wizard.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^2.0.0",
+    "soso-stepper": "SosoElements/soso-stepper#^0.0.1",
+    "soso-pages": "SosoElements/soso-pages"
+  },
+  "devDependencies": {
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
+  },
+  "resolutions": {
+    "polymer": "^2.0.0"
+  }
+}
