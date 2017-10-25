@@ -28,7 +28,7 @@
 </head>
 
 <body>
-  <soso-wizard label="Create a new card" cancelable>
+  <soso-wizard id="wiz" label="Create a new card" cancelable>
     <div data-label="Step one">
       <h1>Page One</h1>
     </div>
@@ -45,6 +45,13 @@
       <h1>Page Five</h1>
     </div>
   </soso-wizard>
+
+  <script>
+    setTimeout(() => {
+      let d = document.getElementById("wiz");
+      d.$.stepper.enable(4);
+    }, 2000);
+  </script>
 </body>
 
 </html>

@@ -89,6 +89,10 @@
       .hidden {
         display: none;
       }
+
+      .blocked {
+        pointer-events: none;
+      }
     </style>
     <header>
       <div id="titleBar" class="horizontal">
@@ -149,8 +153,23 @@
         } else {
           this.animation = "shift-left";
         }
+        let forward = newValue > oldValue;
         if (this.$.pages) {
-          this.$.pages.selectedIndex = this.selectedIndex;
+          this.$.stepper.classList.add("blocked");
+          let currentPage = this.$.pages.currentPage;
+          let _changePage = () => {
+            this.$.stepper.classList.remove("blocked");
+            this.$.pages.selectedIndex = this.selectedIndex;
+          };
+          if (currentPage && currentPage.onTransition) {
+            currentPage.onTransition(forward).then(() => {
+              _changePage();
+            }).catch((err) => {
+              _changePage();
+            })
+          } else {
+            _changePage();
+          }
         }
       }
 
@@ -161,6 +180,7 @@
           steps.push({
             label: p.dataset.label || ""
           });
+          p.wizard = this;
         }
         this.steps = steps;
         this._refreshPage();
@@ -168,6 +188,24 @@
 
       _onCancel() {
         this.dispatchEvent(new CustomEvent('cancel', { bubbles: true, composed: true, detail: {} }));
+      }
+
+      next() {
+        let index = this.selectedIndex + 1;
+        if (index < this.steps.length) {
+          this.set("selectedIndex", index);
+        }
+      }
+
+      back() {
+        let index = this.selectedIndex - 1;
+        if (index >= 0) {
+          this.set("selectedIndex", index);
+        }
+      }
+
+      cancel() {
+        this._onCancel();
       }
     }
 
