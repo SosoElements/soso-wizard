@@ -156,13 +156,23 @@
         let forward = newValue > oldValue;
         if (this.$.pages) {
           this.$.stepper.classList.add("blocked");
-          let currentPage = this.$.pages.currentPage;
           let _changePage = () => {
             this.$.stepper.classList.remove("blocked");
             this.$.pages.selectedIndex = this.selectedIndex;
+            setTimeout(() => {
+              let currentPage = this.$.pages.currentPage;
+              if (this._prevPage != currentPage) {
+                if (currentPage.onTransitioningIn) {
+                  currentPage.onTransitioningIn(forward);
+                }
+              }
+            }, 200);
           };
-          if (currentPage && currentPage.onTransition) {
-            currentPage.onTransition(forward).then(() => {
+
+          let prevPage = this.$.pages.currentPage;
+          this._prevPage = prevPage;
+          if (prevPage && prevPage.onTransitioningOut) {
+            prevPage.onTransitioningOut(forward).then(() => {
               _changePage();
             }).catch((err) => {
               this.$.stepper.classList.remove("blocked");
