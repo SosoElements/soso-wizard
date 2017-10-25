@@ -165,7 +165,8 @@
             currentPage.onTransition(forward).then(() => {
               _changePage();
             }).catch((err) => {
-              _changePage();
+              this.$.stepper.classList.remove("blocked");
+              this.selectedIndex = oldValue;
             })
           } else {
             _changePage();
@@ -206,6 +207,17 @@
 
       cancel() {
         this._onCancel();
+      }
+
+      get data() {
+        if (!this._data) {
+          this._data = {};
+        }
+        return this._data;
+      }
+
+      set data(value) {
+        this._data = value || {};
       }
     }
 
