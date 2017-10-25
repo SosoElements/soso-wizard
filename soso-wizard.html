@@ -66,28 +66,10 @@
       #titleBar {
         padding: 16px 16px 3px;
       }
-
-      #closeIcon {
-        height: 18px;
-        width: 18px;
-        padding: 4px;
-      }
-
-      svg {
-        display: block;
-        height: 100%;
-        width: 100%;
-        box-sizing: border-box;
-      }
     </style>
     <header>
       <div id="titleBar" class="horizontal">
         <h4 class="flex">[[label]]</h4>
-        <!-- <div id="closeIcon">
-          <svg viewBox="0 0 24 24">
-            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
-          </svg>
-        </div> -->
       </div>
       <soso-stepper id="stepper" steps="[[steps]]" selected-index="{{selectedIndex}}"></soso-stepper>
     </header>
@@ -117,6 +99,16 @@
         };
       }
 
+      connectedCallback() {
+        super.connectedCallback();
+        this.addEventListener('next-enable', () => {
+          this.$.stepper.enable(this.selectedIndex + 1);
+        });
+        this.addEventListener('next-disable', () => {
+          this.$.stepper.enable(this.selectedIndex);
+        });
+      }
+
       _refreshPage(newValue, oldValue) {
         newValue = newValue || 0;
         oldValue = oldValue || 0;
@@ -140,9 +132,6 @@
         }
         this.steps = steps;
         this._refreshPage();
-        setTimeout(() => {
-          this.$.stepper.enable(4);
-        }, 2000);
       }
     }
 
