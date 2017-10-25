@@ -5,7 +5,7 @@
   "dependencies": {
     "polymer": "Polymer/polymer#^2.0.0",
     "soso-stepper": "SosoElements/soso-stepper#^0.0.2",
-    "soso-pages": "SosoElements/soso-pages"
+    "soso-pages": "SosoElements/soso-pages#^0.1.0"
   },
   "devDependencies": {
     "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
