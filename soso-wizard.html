@@ -66,10 +66,35 @@
       #titleBar {
         padding: 16px 16px 3px;
       }
+
+      #buttonPanel {
+        padding-left: 10px;
+      }
+
+      button {
+        background: none;
+        text-transform: uppercase;
+        border: none;
+        font-family: inherit;
+        font-size: 14px;
+        opacity: 0.87;
+        letter-spacing: 0.07em;
+        color: var(--soso-wizard-button-color, #1b98eb);
+        padding: 0;
+        outline: none;
+        cursor: pointer;
+      }
+
+      .hidden {
+        display: none;
+      }
     </style>
     <header>
       <div id="titleBar" class="horizontal">
         <h4 class="flex">[[label]]</h4>
+        <div id="buttonPanel" class="hidden">
+          <button on-click="_onCancel">Cancel</button>
+        </div>
       </div>
       <soso-stepper id="stepper" steps="[[steps]]" selected-index="{{selectedIndex}}"></soso-stepper>
     </header>
@@ -95,7 +120,8 @@
             value: "shift-left"
           },
           steps: Array,
-          label: String
+          label: String,
+          cancelable: Boolean
         };
       }
 
@@ -107,6 +133,11 @@
         this.addEventListener('next-disable', () => {
           this.$.stepper.enable(this.selectedIndex);
         });
+        if (this.cancelable) {
+          this.$.buttonPanel.classList.remove("hidden");
+        } else {
+          this.$.buttonPanel.classList.add("hidden");
+        }
       }
 
       _refreshPage(newValue, oldValue) {
@@ -132,6 +163,10 @@
         }
         this.steps = steps;
         this._refreshPage();
+      }
+
+      _onCancel() {
+        this.dispatchEvent(new CustomEvent('cancel', { bubbles: true, composed: true, detail: {} }));
       }
     }
 
