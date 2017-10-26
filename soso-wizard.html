@@ -137,11 +137,14 @@
 
       connectedCallback() {
         super.connectedCallback();
+        this._lasteEnableIndex = 0;
         this.addEventListener('next-enable', () => {
-          this.$.stepper.enable(this.selectedIndex + 1);
+          this._lasteEnableIndex = this.selectedIndex + 1;
+          this.$.stepper.enable(this._lasteEnableIndex);
         });
         this.addEventListener('next-disable', () => {
-          this.$.stepper.enable(this.selectedIndex);
+          this._lasteEnableIndex = this.selectedIndex;
+          this.$.stepper.enable(this._lasteEnableIndex);
         });
         if (this.cancelable) {
           this.$.buttonPanel.classList.remove("hidden");
@@ -229,6 +232,14 @@
         if (index >= 0) {
           this.set("selectedIndex", index);
         }
+      }
+
+      goto(index) {
+        let index = Math.max(0, Math.min(index, steps.length - 1));
+        if (index > this._lasteEnableIndex) {
+          this.$.steps.enable(index);
+        }
+        this.set("selectedIndex", index);
       }
 
       cancel() {
