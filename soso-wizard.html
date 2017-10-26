@@ -141,6 +141,13 @@
         };
       }
 
+      reset() {
+        this._reseting = true;
+        this.selectedIndex = 0;
+        this._data = {};
+        this._reseting = false;
+      }
+
       connectedCallback() {
         super.connectedCallback();
         this._lasteEnableIndex = 0;
@@ -171,6 +178,11 @@
       }
 
       _refreshPage(newValue, oldValue) {
+        if (this._reseting) {
+          this._prevPage = null;
+          this.$.pages.selectedIndex = this.selectedIndex;
+          return;
+        }
         newValue = newValue || 0;
         oldValue = oldValue || 0;
         if (newValue < oldValue) {
