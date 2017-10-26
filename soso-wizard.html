@@ -237,7 +237,7 @@
       goto(index) {
         index = Math.max(0, Math.min(index, this.steps.length - 1));
         if (index > this._lasteEnableIndex) {
-          this.$.steps.enable(index);
+          this.$.stepper.enable(index);
         }
         this.set("selectedIndex", index);
       }
