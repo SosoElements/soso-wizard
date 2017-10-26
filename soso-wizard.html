@@ -154,9 +154,9 @@
       _onNavEnabled() {
         if (this.$.stepper) {
           if (this.navigationEnabled) {
-            this.$.stepper.classList.add("blocked");
-          } else {
             this.$.stepper.classList.remove("blocked");
+          } else {
+            this.$.stepper.classList.add("blocked");
           }
         }
       }
