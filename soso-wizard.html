@@ -126,7 +126,12 @@
           },
           steps: Array,
           label: String,
-          cancelable: Boolean
+          cancelable: Boolean,
+          navigationEnabled: {
+            type: Boolean,
+            value: true,
+            observer: '_onNavEnabled'
+          }
         };
       }
 
@@ -143,6 +148,17 @@
         } else {
           this.$.buttonPanel.classList.add("hidden");
         }
+        this._onNavEnabled();
+      }
+
+      _onNavEnabled() {
+        if (this.$.stepper) {
+          if (this.navigationEnabled) {
+            this.$.stepper.classList.add("blocked");
+          } else {
+            this.$.stepper.classList.remove("blocked");
+          }
+        }
       }
 
       _refreshPage(newValue, oldValue) {
@@ -157,7 +173,7 @@
         if (this.$.pages) {
           this.$.stepper.classList.add("blocked");
           let _changePage = () => {
-            this.$.stepper.classList.remove("blocked");
+            this._onNavEnabled();
             this.$.pages.selectedIndex = this.selectedIndex;
             setTimeout(() => {
               let currentPage = this.$.pages.currentPage;
@@ -175,7 +191,7 @@
             prevPage.onTransitioningOut(forward).then(() => {
               _changePage();
             }).catch((err) => {
-              this.$.stepper.classList.remove("blocked");
+              this._onNavEnabled();
               this.selectedIndex = oldValue;
             })
           } else {
