@@ -235,7 +235,7 @@
       }
 
       goto(index) {
-        let index = Math.max(0, Math.min(index, steps.length - 1));
+        index = Math.max(0, Math.min(index, steps.length - 1));
         if (index > this._lasteEnableIndex) {
           this.$.steps.enable(index);
         }
