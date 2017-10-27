@@ -146,6 +146,9 @@
         this.selectedIndex = 0;
         this._data = {};
         this._reseting = false;
+        if (this.$.stepper) {
+          this.$.stepper.enable(0);
+        }
       }
 
       connectedCallback() {
