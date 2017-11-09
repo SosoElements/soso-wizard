@@ -154,6 +154,7 @@
 
       connectedCallback() {
         super.connectedCallback();
+        this._attached = true;
         this._lasteEnableIndex = 0;
         this.addEventListener('next-enable', () => {
           this._lasteEnableIndex = this.selectedIndex + 1;
@@ -169,6 +170,14 @@
           this.$.buttonPanel.classList.add("hidden");
         }
         this._onNavEnabled();
+        setTimeout(() => {
+          this._pagesLoaded();
+        })
+      }
+
+      disconnectedCallback() {
+        super.disconnectedCallback();
+        this._attached = false;
       }
 
       _onNavEnabled() {
@@ -226,6 +235,9 @@
       }
 
       _pagesLoaded() {
+        if (!this._attached) {
+          return;
+        }
         const pages = this.$.slot.assignedNodes({ flatten: true }).filter(n => n.nodeType === Node.ELEMENT_NODE);
         let steps = [];
         for (let p of pages) {
