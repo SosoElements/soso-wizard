@@ -100,7 +100,7 @@
         }
       }
     </style>
-    <header>
+    <header id="header">
       <div id="titleBar" class="horizontal">
         <h4 class="flex">[[label]]</h4>
         <div id="buttonPanel" class="hidden">
@@ -140,6 +140,14 @@
             observer: '_onNavEnabled'
           }
         };
+      }
+
+      set headerVisible(value) {
+        if (value) {
+          this.$.header.classList.remove("hidden");
+        } else {
+          this.$.header.classList.add("hidden");
+        }
       }
 
       reset() {
